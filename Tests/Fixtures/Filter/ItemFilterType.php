@@ -42,6 +42,7 @@ class ItemFilterType extends AbstractType
 
         $builder->add('enabled', $this->checkbox ? 'filter_checkbox' : 'filter_boolean');
         $builder->add('createdAt', 'filter_date');
+        $builder->add('description', 'textarea'); // standard form type
     }
 
     public function getName()

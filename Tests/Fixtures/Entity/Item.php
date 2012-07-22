@@ -39,6 +39,11 @@ class Item
     protected $createdAt;
 
     /**
+     * @ORM\Column(type="string", nullable="true")
+     */
+    protected $description;
+
+    /**
      * Get id
      *
      * @return integer
@@ -126,5 +131,25 @@ class Item
     public function getCreatedAt()
     {
         return $this->createdAt;
+    }
+
+    /**
+     * Set description
+     *
+     * @param datetime $description
+     */
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    /**
+     * Get description
+     *
+     * @return datetime $description
+     */
+    public function getDescription()
+    {
+        return $this->description;
     }
 }

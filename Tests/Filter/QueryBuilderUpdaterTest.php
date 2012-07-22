@@ -2,11 +2,14 @@
 
 namespace Lexik\Bundle\FormFilterBundle\Tests\Filter;
 
+use Lexik\Bundle\FormFilterBundle\Tests\Fixtures\TextareaApplicableFilter;
+
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 use Lexik\Bundle\FormFilterBundle\DependencyInjection\LexikFormFilterExtension;
+use Lexik\Bundle\FormFilterBundle\DependencyInjection\Compiler\ApplicableFilterPass;
 use Lexik\Bundle\FormFilterBundle\DependencyInjection\Compiler\FilterTransformerCompilerPass;
 use Lexik\Bundle\FormFilterBundle\Filter\Extension\Type\NumberFilterType;
 use Lexik\Bundle\FormFilterBundle\Filter\Extension\Type\TextFilterType;
@@ -92,6 +95,19 @@ class QueryBuilderUpdaterTest extends TestCase
         ));
 
         $expectedDql = 'SELECT i FROM Lexik\Bundle\FormFilterBundle\Tests\Fixtures\Entity i WHERE i.name LIKE \'%blabla\' AND i.position <= 2 AND i.createdAt = \'2013-09-27\'';
+        $filterQueryBuilder->addFilterConditions($form, $doctrineQueryBuilder);
+        $this->assertEquals($expectedDql, $doctrineQueryBuilder->getDql());
+    }
+
+    public function testApplicableFilter()
+    {
+        $filterQueryBuilder = $this->initQueryBuilder();
+        $doctrineQueryBuilder = $this->createDoctrineQueryBuilder();
+
+        $form = $this->formFactory->create(new ItemFilterType());
+        $form->bind(array('name' => 'blabla', 'position' => 2, 'description' => 'this is very cool dude'));
+
+        $expectedDql = 'SELECT i FROM Lexik\Bundle\FormFilterBundle\Tests\Fixtures\Entity i WHERE i.name LIKE \'blabla\' AND i.position > 2 AND i.description = \'this is very cool dude\'';
         $filterQueryBuilder->addFilterConditions($form, $doctrineQueryBuilder);
         $this->assertEquals($expectedDql, $doctrineQueryBuilder->getDql());
     }
@@ -199,6 +215,8 @@ class QueryBuilderUpdaterTest extends TestCase
     protected function initQueryBuilder()
     {
         $container = $this->getContainer();
+        $container->get('lexik_form_filter.applicable_filter_aggregator')->add('applicable_filter.textarea', new TextareaApplicableFilter());
+
         return $container->get('lexik_form_filter.query_builder_updater');
     }
 
@@ -213,6 +231,7 @@ class QueryBuilderUpdaterTest extends TestCase
         $container->getCompilerPassConfig()->setOptimizationPasses(array());
         $container->getCompilerPassConfig()->setRemovingPasses(array());
         $container->addCompilerPass(new FilterTransformerCompilerPass());
+        $container->addCompilerPass(new ApplicableFilterPass());
         $container->compile();
 
         return $container;
