@@ -2,14 +2,13 @@
 
 namespace Lexik\Bundle\FormFilterBundle\Filter;
 
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormConfigInterface;
 
+use Lexik\Bundle\FormFilterBundle\Filter\Extension\ApplicableFilterAggregator;
 use Lexik\Bundle\FormFilterBundle\Filter\Extension\FilterTypeInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\Extension\FilterTypeSharedableInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\Transformer\TransformerAggregatorInterface;
-use Lexik\Bundle\FormFilterBundle\Tests\Filter\FilterTransformerTest;
 
 use Doctrine\ORM\QueryBuilder;
 
@@ -21,12 +20,17 @@ use Doctrine\ORM\QueryBuilder;
 class QueryBuilderUpdater implements QueryBuilderUpdaterInterface
 {
     /**
-     * @var Lexik\Bundle\FormFilterBundle\Filter\Transformer\TransformerAggregatorInterface
+     * @var \Lexik\Bundle\FormFilterBundle\Filter\Transformer\TransformerAggregatorInterface
      */
-    protected $filterTransformerAggregator;
+    protected $transformerAggregator;
 
     /**
-     * @var Lexik\Bundle\FormFilterBundle\Filter\Expr
+     * @var \Lexik\Bundle\FormFilterBundle\Filter\Extension\ApplicableFilterAggregator
+     */
+    protected $applicableFiltersAggregator;
+
+    /**
+     * @var \Lexik\Bundle\FormFilterBundle\Filter\Expr
      */
     protected $expr;
 
@@ -38,11 +42,12 @@ class QueryBuilderUpdater implements QueryBuilderUpdaterInterface
     /**
      * Constructor
      *
-     * @param TransformerAggregatorInterface $filterTransformerAggregator
+     * @param TransformerAggregatorInterface $transformerAggregator
      */
-    public function __construct(TransformerAggregatorInterface $filterTransformerAggregator)
+    public function __construct(TransformerAggregatorInterface $transformerAggregator, ApplicableFilterAggregator $applicableFiltersAggregator)
     {
-        $this->filterTransformerAggregator = $filterTransformerAggregator;
+        $this->transformerAggregator       = $transformerAggregator;
+        $this->applicableFiltersAggregator = $applicableFiltersAggregator;
         $this->expr                        = new Expr();
         $this->parts                       = array();
     }
@@ -92,6 +97,15 @@ class QueryBuilderUpdater implements QueryBuilderUpdaterInterface
                     $childAlias = $this->parts[$join];
                     $this->addFilterConditions($child, $queryBuilder, $childAlias, $this->parts);
                 }
+
+            } else if (null !== $applicableFilterId = $this->applicableFiltersAggregator->findApplicableFilterFor($child)) {
+                $applicableFilter = $this->applicableFiltersAggregator->get($applicableFilterId);
+
+                $values = $this->prepareFilterValues($child, $applicableFilter);
+                $values += array('alias' => $alias);
+                $field = $values['alias'] . '.' . $child->getName();
+
+                $applicableFilter->applyFilter($queryBuilder, $this->expr, $field, $values);
             }
         }
 
@@ -139,7 +153,7 @@ class QueryBuilderUpdater implements QueryBuilderUpdaterInterface
     protected function prepareFilterValues(FormInterface $form, FilterTypeInterface $type)
     {
         $values      = array();
-        $transformer = $this->filterTransformerAggregator->get($type->getTransformerId());
+        $transformer = $this->transformerAggregator->get($type->getTransformerId());
         $values      = $transformer->transform($form);
 
         $config = $form->getConfig();

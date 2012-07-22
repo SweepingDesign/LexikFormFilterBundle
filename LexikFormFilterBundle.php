@@ -2,6 +2,7 @@
 
 namespace Lexik\Bundle\FormFilterBundle;
 
+use Lexik\Bundle\FormFilterBundle\DependencyInjection\Compiler\ApplicableFilterPass;
 use Lexik\Bundle\FormFilterBundle\DependencyInjection\Compiler\FilterTransformerCompilerPass;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -14,5 +15,6 @@ class LexikFormFilterBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new FilterTransformerCompilerPass());
+        $container->addCompilerPass(new ApplicableFilterPass());
     }
 }

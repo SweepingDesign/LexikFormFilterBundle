@@ -3,15 +3,13 @@
 namespace Lexik\Bundle\FormFilterBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Reference;
-
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 class FilterTransformerCompilerPass implements CompilerPassInterface
 {
     /**
-     * (non-PHPdoc)
-     * @see Symfony\Component\DependencyInjection\Compiler.CompilerPassInterface::process()
+     * {@inheritdoc}
      */
     public function process(ContainerBuilder $container)
     {
