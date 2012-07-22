@@ -2,7 +2,6 @@
 
 namespace Lexik\Bundle\FormFilterBundle\Filter\Extension\Type;
 
-use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
@@ -15,7 +14,7 @@ use Doctrine\ORM\QueryBuilder;
  *
  * @author Cédric Girard <c.girard@lexik.fr>
  */
-class NumberRangeFilterType extends AbstractFilterType implements FilterTypeInterface
+class NumberRangeFilterType extends AbstractFilterType
 {
     /**
      * {@inheritdoc}

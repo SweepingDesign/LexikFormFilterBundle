@@ -2,6 +2,11 @@
 
 namespace Lexik\Bundle\FormFilterBundle\Filter\Extension\Type;
 
+use Lexik\Bundle\FormFilterBundle\Filter\Extension\FilterTypeInterface;
+use Lexik\Bundle\FormFilterBundle\Filter\Expr;
+
+use Doctrine\ORM\QueryBuilder;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
@@ -11,7 +16,7 @@ use Symfony\Component\OptionsResolver\OptionsResolverInterface;
  *
  * @author Cédric Girard <c.girard@lexik.fr>
  */
-abstract class AbstractFilterType extends AbstractType
+abstract class AbstractFilterType extends AbstractType implements FilterTypeInterface
 {
     /**
      * {@inheritdoc}
@@ -36,5 +41,23 @@ abstract class AbstractFilterType extends AbstractType
              'required'     => false,
              'apply_filter' => null,
         ));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function applyFilter(QueryBuilder $queryBuilder, Expr $expr, $field, array $values)
+    {
+        if (!empty($values['value'])) {
+            $queryBuilder->andWhere($expr->eq(sprintf('%s.%s', $values['alias'], $field), $value));
+        }
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getTransformerId()
+    {
+        return 'lexik_form_filter.transformer.default';
     }
 }

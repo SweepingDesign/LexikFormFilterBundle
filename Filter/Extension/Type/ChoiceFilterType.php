@@ -3,6 +3,7 @@
 namespace Lexik\Bundle\FormFilterBundle\Filter\Extension\Type;
 
 use Doctrine\ORM\QueryBuilder;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Lexik\Bundle\FormFilterBundle\Filter\Expr;
@@ -12,7 +13,7 @@ use Lexik\Bundle\FormFilterBundle\Filter\Expr;
  *
  * @author Cédric Girard <c.girard@lexik.fr>
  */
-class ChoiceFilterType extends AbstractFilterType implements FilterTypeInterface
+class ChoiceFilterType extends AbstractFilterType
 {
     /**
      * {@inheritdoc}

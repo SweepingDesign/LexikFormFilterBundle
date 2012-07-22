@@ -1,6 +1,6 @@
 <?php
 
-namespace Lexik\Bundle\FormFilterBundle\Filter\Extension\Type;
+namespace Lexik\Bundle\FormFilterBundle\Filter\Extension;
 
 use Lexik\Bundle\FormFilterBundle\Filter\Expr;
 
@@ -24,7 +24,7 @@ interface FilterTypeInterface
     public function applyFilter(QueryBuilder $queryBuilder, Expr $expr, $field, array $values);
 
     /**
-     * Return service id used to transforme values
+     * Return service id used to transform values
      *
      * @return string
      */

@@ -6,8 +6,8 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormInterface;
 use Symfony\Component\Form\FormConfigInterface;
 
-use Lexik\Bundle\FormFilterBundle\Filter\Extension\Type\FilterTypeInterface;
-use Lexik\Bundle\FormFilterBundle\Filter\Extension\Type\FilterTypeSharedableInterface;
+use Lexik\Bundle\FormFilterBundle\Filter\Extension\FilterTypeInterface;
+use Lexik\Bundle\FormFilterBundle\Filter\Extension\FilterTypeSharedableInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\Transformer\TransformerAggregatorInterface;
 use Lexik\Bundle\FormFilterBundle\Tests\Filter\FilterTransformerTest;
 

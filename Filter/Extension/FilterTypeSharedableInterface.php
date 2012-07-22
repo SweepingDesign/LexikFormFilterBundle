@@ -1,6 +1,6 @@
 <?php
 
-namespace Lexik\Bundle\FormFilterBundle\Filter\Extension\Type;
+namespace Lexik\Bundle\FormFilterBundle\Filter\Extension;
 
 use Lexik\Bundle\FormFilterBundle\Filter\QueryBuilderExecuterInterface;
 

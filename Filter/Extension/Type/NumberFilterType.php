@@ -15,7 +15,7 @@ use Lexik\Bundle\FormFilterBundle\Filter\Expr;
  *
  * @author Cédric Girard <c.girard@lexik.fr>
  */
-class NumberFilterType extends AbstractFilterType implements FilterTypeInterface
+class NumberFilterType extends AbstractFilterType
 {
     const OPERATOR_EQUAL              = 'eq';
     const OPERATOR_GREATER_THAN       = 'gt';

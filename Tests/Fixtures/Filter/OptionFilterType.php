@@ -9,7 +9,7 @@ use Doctrine\ORM\QueryBuilder;
 
 use Lexik\Bundle\FormFilterBundle\Filter\QueryBuilderExecuterInterface;
 use Lexik\Bundle\FormFilterBundle\Filter\Expr;
-use Lexik\Bundle\FormFilterBundle\Filter\Extension\Type\FilterTypeSharedableInterface;
+use Lexik\Bundle\FormFilterBundle\Filter\Extension\FilterTypeSharedableInterface;
 
 /**
  * Form filter for tests.

@@ -4,6 +4,7 @@ namespace Lexik\Bundle\FormFilterBundle\Filter\Extension\Type;
 
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Common\Collections\Collection;
+
 use Symfony\Component\OptionsResolver\OptionsResolverInterface;
 
 use Lexik\Bundle\FormFilterBundle\Filter\Expr;
@@ -13,7 +14,7 @@ use Lexik\Bundle\FormFilterBundle\Filter\Expr;
  *
  * @author Cédric Girard <c.girard@lexik.fr>
  */
-class EntityFilterType extends AbstractFilterType implements FilterTypeInterface
+class EntityFilterType extends AbstractFilterType
 {
     /**
      * {@inheritdoc}

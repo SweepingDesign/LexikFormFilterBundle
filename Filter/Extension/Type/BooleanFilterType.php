@@ -16,7 +16,7 @@ use Doctrine\ORM\QueryBuilder;
  *
  * @author Cédric Girard <c.girard@lexik.fr>
  */
-class BooleanFilterType extends AbstractFilterType implements FilterTypeInterface
+class BooleanFilterType extends AbstractFilterType
 {
     const VALUE_YES = 'y';
     const VALUE_NO  = 'n';
